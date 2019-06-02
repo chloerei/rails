@@ -99,6 +99,16 @@ module ActiveStorage
       end
     end
 
+    def public_url(key, **options)
+      instrument :url, key: key do |payload|
+        generated_url = uri_for(key).to_s
+
+        payload[:url] = generated_url
+
+        generated_url
+      end
+    end
+
     def url_for_direct_upload(key, expires_in:, content_type:, content_length:, checksum:)
       instrument :url, key: key do |payload|
         generated_url = signer.signed_uri(

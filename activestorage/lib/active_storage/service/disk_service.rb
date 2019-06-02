@@ -96,6 +96,10 @@ module ActiveStorage
       end
     end
 
+    def public_url(key, **options)
+      url(key, options.merge(expires_in: nil))
+    end
+
     def url_for_direct_upload(key, expires_in:, content_type:, content_length:, checksum:)
       instrument :url, key: key do |payload|
         verified_token_with_expiration = ActiveStorage.verifier.generate(
