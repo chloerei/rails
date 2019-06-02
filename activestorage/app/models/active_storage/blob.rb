@@ -277,7 +277,7 @@ class ActiveStorage::Blob < ActiveRecord::Base
       elsif !allowed_inline?
         { content_type: content_type, disposition: :attachment, filename: filename }
       else
-        { content_type: content_type }
+        { content_type: content_type, disposition: :inline, filename: filename }
       end
     end
 end

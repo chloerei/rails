@@ -17,10 +17,11 @@ module ActiveStorage
       @container = container
     end
 
-    def upload(key, io, checksum: nil, **)
+    def upload(key, io, checksum: nil, content_type: nil, disposition: nil, filename: nil)
       instrument :upload, key: key, checksum: checksum do
+        content_disposition = content_disposition_with(type: disposition, filename: filename) if disposition && filename
         handle_errors do
-          blobs.create_block_blob(container, key, IO.try_convert(io) || io, content_md5: checksum)
+          blobs.create_block_blob(container, key, IO.try_convert(io) || io, content_md5: checksum, content_type: content_type, content_disposition: content_disposition)
         end
       end
     end
